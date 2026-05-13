@@ -20,6 +20,7 @@
     "prettier": "^3.8.3"
   },
   "dependencies": {
+    "express": "^5.2.1",
     "lint-staged": "^16.4.0"
   }
 }
