@@ -4,6 +4,8 @@ import { helperPostgres } from './src/db/postgres/helper.js'
 
 const app = express() //crio um servidor com express
 
+app.use(express.json())
+
 app.get('/api/users', async (req, res) => {
   const results = await helperPostgres.query('SELECT * FROM users') //chamo esse obj
 
