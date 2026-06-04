@@ -1,20 +1,15 @@
 import 'dotenv/config'
 import express from 'express'
-import { helperPostgres } from './src/db/postgres/helper.js'
+import { CreateUserController } from './src/controllers/create-user.js'
 
 const app = express() //crio um servidor com express
 
 app.use(express.json())
 
-app.get('/api/users', async (req, res) => {
-  const results = await helperPostgres.query('SELECT * FROM users') //chamo esse obj
-
-  res.send(JSON.stringify(results)) //envio os resultados para o front-end
-})
-
 app.post('/api/users', async (req, res) => {
-  console.log(req.body) // req é um obj que tem esses métodos body, headers...
-  res.status(201).send('user created')
+  const controller = new CreateUserController()
+  const { body } = await controller.execute(req)
+  res.send(body)
 })
 
 app.listen(process.env.EXPRESS_PORT, () => {
