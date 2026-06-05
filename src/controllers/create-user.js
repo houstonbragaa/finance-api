@@ -8,8 +8,6 @@ export class CreateUserController {
     try {
       const params = httpRequest.body
 
-      //validar campos
-
       const fieldsList = ['first_name', 'last_name', 'email', 'password']
 
       for (const field of fieldsList) {
