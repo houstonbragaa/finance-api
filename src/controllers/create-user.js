@@ -1,6 +1,6 @@
 import { PostgresValidatorEmail } from '../repositories/postgres/create-user.js'
 import { CreateUserService } from '../services/create-user.js'
-import { badRequest, internalServerError, successCreate } from './helper.js'
+import { badRequest, internalServerError, successCreate } from './helpers.js'
 import validator from 'validator'
 
 export class CreateUserController {
