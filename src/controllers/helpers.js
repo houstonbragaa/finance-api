@@ -13,6 +13,11 @@ export const successCreate = (body) => ({
   body,
 })
 
+export const notFound = (body) => ({
+  statusCode: 404,
+  body,
+})
+
 export const internalServerError = () => ({
   statusCode: 500,
   body: {
