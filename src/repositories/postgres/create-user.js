@@ -24,14 +24,3 @@ export class PostgresCreateUserRepository {
     return createdUser[0]
   }
 }
-
-export class PostgresValidatorEmail {
-  async execute(emailParams) {
-    const rows = await helperPostgres.query(
-      'SELECT id FROM users WHERE email = $1',
-      [emailParams],
-    )
-
-    return rows.length > 0
-  }
-}
