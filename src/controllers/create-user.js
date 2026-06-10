@@ -1,4 +1,5 @@
-import { PostgresValidatorEmail } from '../repositories/postgres/create-user.js'
+import { EmailAlreadyExistsError } from '../errors/user.js'
+import { PostgresGetUserByEmailRepository } from '../repositories/postgres/get-user-by-email.js'
 import { CreateUserService } from '../services/create-user.js'
 import { badRequest, internalServerError, successCreate } from './helpers.js'
 import validator from 'validator'
@@ -26,10 +27,12 @@ export class CreateUserController {
           errorMessage: 'The password must be at least 8 characters long!',
         })
 
-      const postgresEmail = new PostgresValidatorEmail()
+      const postgresEmail = new PostgresGetUserByEmailRepository()
       const emailAlreadyExists = await postgresEmail.execute(params.email)
       if (emailAlreadyExists)
-        return badRequest({ errorMessage: 'Email Already Exists!' })
+        return badRequest({
+          errorMessage: `The e-mail ${params.email} already in use error!`,
+        })
 
       //chamar o service (use-case)
 
@@ -37,6 +40,9 @@ export class CreateUserController {
       const createdUser = await service.execute(params)
       return successCreate(createdUser)
     } catch (error) {
+      if (error instanceof EmailAlreadyExistsError) {
+        return badRequest({ errorMessage: error.message })
+      }
       console.log(error)
       return internalServerError()
     }
