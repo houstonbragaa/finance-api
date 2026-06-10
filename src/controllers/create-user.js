@@ -1,4 +1,4 @@
-import { EmailAlreadyExistsError } from '../errors/user.js'
+import { EmailAlreadyInUseError } from '../errors/user.js'
 import { PostgresGetUserByEmailRepository } from '../repositories/postgres/get-user-by-email.js'
 import { CreateUserService } from '../services/create-user.js'
 import { badRequest, internalServerError, successCreate } from './helpers.js'
@@ -40,7 +40,7 @@ export class CreateUserController {
       const createdUser = await service.execute(params)
       return successCreate(createdUser)
     } catch (error) {
-      if (error instanceof EmailAlreadyExistsError) {
+      if (error instanceof EmailAlreadyInUseError) {
         return badRequest({ errorMessage: error.message })
       }
       console.log(error)
