@@ -11,3 +11,10 @@ export class UserNotFoundError extends Error {
     this.name = 'UserNotFoundError'
   }
 }
+
+export class NoOneUsersFoundError extends Error {
+  constructor() {
+    super(`No one users found error!`)
+    this.name = 'NoOneUsersFoundError'
+  }
+}
