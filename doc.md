@@ -40,4 +40,16 @@
 
 - [x] criar repository, service e controller do get-user-by-id
 
-- [] Consertar o repository separado com a validação se o email ja existe no banco de dados
+- [x] Consertar o repository separado com a validação se o email ja existe no banco de dados
+
+//update user
+
+- [] Criar toda a estrutura de como vai ficar a arquitetura do update user route
+- [] Criar o repositório passando o id do usuário e os parametros da requisição
+ UPDATE users
+ SET ....
+ WHERE ID =
+ RETURNING *          -- PERMITE RETORNAR O USUÁRIO ATUALIZADO
+
+- [] Criar script com 2 arrays vazios, fields e values, para assim poder montar toda updateQuery, fazendo um forEach do Object.keys(params) 
+- [] 
