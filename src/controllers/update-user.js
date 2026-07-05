@@ -1,41 +1,54 @@
 import validator from 'validator'
-import { badRequest, internalServerError, ok } from './helpers.js'
-
+import { badRequest, internalServerError, notFound, ok } from './helpers.js'
 import { UpdateUserService } from '../services/update-user.js'
+import { EmailAlreadyInUseError } from '../errors/user.js'
 
 export class UpdateUserController {
   async execute(httpRequest) {
     try {
-      const updateParams = httpRequest.body
+      const updateUserParams = httpRequest.body
 
-      const idIsNotValid = !validator.isUUID(updateParams.userId)
-      if (idIsNotValid) return badRequest({ errorMessage: 'Id is invalid!' })
+      const userId = httpRequest.params.userId
+      const idIsNotValid = !validator.isUUID(userId)
 
-      if (updateParams.email) {
-        const emailIsNotValid = !validator.isEmail(updateParams.email)
-        if (emailIsNotValid)
-          return badRequest({ errorMessage: 'Email is invalid, try other!' })
+      if (idIsNotValid) {
+        return notFound({ errorMessage: 'User not found!' })
       }
 
-      if (updateParams.password) {
-        if (updateParams.password.length < 8) {
+      const allowedFields = ['first_name', 'last_name', 'email', 'password']
+      const someFieldsNotAllowed = Object.keys(updateUserParams).some(
+        (field) => !allowedFields.includes(field),
+      )
+
+      if (someFieldsNotAllowed) {
+        return badRequest({ errorMessage: 'Field not found!' })
+      }
+
+      if (updateUserParams.email) {
+        const emailIsNotValid = !validator.isEmail(updateUserParams.email)
+        if (emailIsNotValid)
+          return badRequest({ errorMessage: 'Email is not valid!' })
+      }
+
+      if (updateUserParams.password) {
+        if (updateUserParams.password.length < 8) {
           return badRequest({
             errorMessage: 'Password need have more than 7 chars',
           })
         }
       }
 
-      const { userId, ...user } = updateParams
-
-      if (Object.keys(user).length === 0) {
-        return badRequest({ errorMessage: 'No fields to update!' })
-      }
-
-      const updateService = new UpdateUserService()
-      const updatedUser = await updateService.execute(userId, user)
+      const updateUserService = new UpdateUserService()
+      const updatedUser = await updateUserService.execute(
+        userId,
+        updateUserParams,
+      )
 
       return ok(updatedUser)
     } catch (error) {
+      if (error instanceof EmailAlreadyInUseError) {
+        return badRequest({ errorMessage: error.message })
+      }
       console.log(error)
       return internalServerError()
     }
