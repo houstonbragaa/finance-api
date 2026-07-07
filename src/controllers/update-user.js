@@ -1,5 +1,10 @@
 import validator from 'validator'
-import { badRequest, internalServerError, notFound, ok } from './helpers.js'
+import {
+  badRequest,
+  internalServerError,
+  notFound,
+  ok,
+} from './helpers/http.js'
 import { UpdateUserService } from '../services/update-user.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
 

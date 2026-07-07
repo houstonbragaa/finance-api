@@ -1,7 +1,11 @@
 import { EmailAlreadyInUseError } from '../errors/user.js'
 import { PostgresGetUserByEmailRepository } from '../repositories/postgres/get-user-by-email.js'
 import { CreateUserService } from '../services/create-user.js'
-import { badRequest, internalServerError, successCreate } from './helpers.js'
+import {
+  badRequest,
+  internalServerError,
+  successCreate,
+} from './helpers/http.js'
 import validator from 'validator'
 
 export class CreateUserController {

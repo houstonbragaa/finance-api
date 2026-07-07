@@ -1,6 +1,11 @@
 import { UserNotFoundError } from '../errors/user.js'
 import { GetUserByIdService } from '../services/get-user-by-id.js'
-import { badRequest, internalServerError, notFound, ok } from './helpers.js'
+import {
+  badRequest,
+  internalServerError,
+  notFound,
+  ok,
+} from './helpers/http.js'
 import validator from 'validator'
 
 export class GetUserByIdController {

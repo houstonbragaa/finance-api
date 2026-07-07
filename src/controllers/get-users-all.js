@@ -1,6 +1,6 @@
 import { NoOneUsersFoundError } from '../errors/user.js'
 import { GetUsersAllService } from '../services/get-users-all.js'
-import { internalServerError, notFound, ok } from './helpers.js'
+import { internalServerError, notFound, ok } from './helpers/http.js'
 
 export class GetUsersAllController {
   async execute() {
