@@ -11,7 +11,8 @@ import validator from 'validator'
 export class GetUserByIdController {
   async execute(httpRequest) {
     try {
-      const idIsValid = validator.isUUID(httpRequest.params.userId)
+      const userId = httpRequest.params.userId
+      const idIsValid = validator.isUUID(userId)
       if (!idIsValid) {
         return badRequest({ errorMessage: 'Id is invalid!' })
       }

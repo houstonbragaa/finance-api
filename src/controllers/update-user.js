@@ -7,6 +7,7 @@ import {
 } from './helpers/http.js'
 import { UpdateUserService } from '../services/update-user.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
+import { checkIdIsValid } from './helpers/user.js'
 
 export class UpdateUserController {
   async execute(httpRequest) {
@@ -14,7 +15,7 @@ export class UpdateUserController {
       const updateUserParams = httpRequest.body
 
       const userId = httpRequest.params.userId
-      const idIsNotValid = !validator.isUUID(userId)
+      const idIsNotValid = checkIdIsValid(userId)
 
       if (idIsNotValid) {
         return notFound({ errorMessage: 'User not found!' })
