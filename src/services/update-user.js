@@ -5,26 +5,24 @@ import { PostgresGetUserByEmailRepository } from '../repositories/postgres/get-u
 import { PostgresUpdateUserRepository } from '../repositories/postgres/update-user.js'
 
 export class UpdateUserService {
-  async execute(userId, updateUserParams) {
+  async execute(userId, params) {
     // verificar se o email ja existe
-    if (updateUserParams.email) {
+    if (params.email) {
       const emailRepository = new PostgresGetUserByEmailRepository()
-      const emailUserAlreadyExists = await emailRepository.execute(
-        updateUserParams.email,
-      )
+      const emailUserAlreadyExists = await emailRepository.execute(params.email)
 
       if (emailUserAlreadyExists && emailUserAlreadyExists.id !== userId) {
-        throw new EmailAlreadyInUseError(updateUserParams.email)
+        throw new EmailAlreadyInUseError(params.email)
       }
     }
     //se mudar a senha, criptografa-lo
 
     const user = {
-      ...updateUserParams,
+      ...params,
     }
 
-    if (updateUserParams.password) {
-      const passwordCrypted = await bcrypt.hash(updateUserParams.password, 10)
+    if (params.password) {
+      const passwordCrypted = await bcrypt.hash(params.password, 10)
 
       user.password = passwordCrypted
     }

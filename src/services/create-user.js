@@ -5,29 +5,29 @@ import { PostgresGetUserByEmailRepository } from '../repositories/postgres/get-u
 import { EmailAlreadyInUseError } from '../errors/user.js'
 
 export class CreateUserService {
-  async execute(createUserParams) {
+  async execute(params) {
     //validar email no banco de dados
     const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
     const emailUserAlreadyExists = await getUserByEmailRepository.execute(
-      createUserParams.email,
+      params.email,
     )
 
     if (emailUserAlreadyExists) {
-      throw new EmailAlreadyInUseError(createUserParams.email)
+      throw new EmailAlreadyInUseError(params.email)
     }
 
     //gerar uuid
     const uuid = v4()
 
     //gerar um hash do bcrypt
-    const passwordCrypted = await bcrypt.hash(createUserParams.password, 10)
+    const passwordCrypted = await bcrypt.hash(params.password, 10)
 
     //inserir o usuário no banco de dados
     const user = {
       id: uuid,
-      first_name: createUserParams.first_name,
-      last_name: createUserParams.last_name,
-      email: createUserParams.email,
+      first_name: params.first_name,
+      last_name: params.last_name,
+      email: params.email,
       password: passwordCrypted,
     }
 

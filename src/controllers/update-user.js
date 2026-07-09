@@ -12,7 +12,7 @@ import { checkIdIsValid } from './helpers/user.js'
 export class UpdateUserController {
   async execute(httpRequest) {
     try {
-      const updateUserParams = httpRequest.body
+      const params = httpRequest.body
 
       const userId = httpRequest.params.userId
       const idIsNotValid = checkIdIsValid(userId)
@@ -22,7 +22,7 @@ export class UpdateUserController {
       }
 
       const allowedFields = ['first_name', 'last_name', 'email', 'password']
-      const someFieldsNotAllowed = Object.keys(updateUserParams).some(
+      const someFieldsNotAllowed = Object.keys(params).some(
         (field) => !allowedFields.includes(field),
       )
 
@@ -30,14 +30,14 @@ export class UpdateUserController {
         return badRequest({ errorMessage: 'Field not found!' })
       }
 
-      if (updateUserParams.email) {
-        const emailIsNotValid = !validator.isEmail(updateUserParams.email)
+      if (params.email) {
+        const emailIsNotValid = !validator.isEmail(params.email)
         if (emailIsNotValid)
           return badRequest({ errorMessage: 'Email is not valid!' })
       }
 
-      if (updateUserParams.password) {
-        if (updateUserParams.password.length < 8) {
+      if (params.password) {
+        if (params.password.length < 8) {
           return badRequest({
             errorMessage: 'Password need have more than 7 chars',
           })
@@ -45,10 +45,7 @@ export class UpdateUserController {
       }
 
       const updateUserService = new UpdateUserService()
-      const updatedUser = await updateUserService.execute(
-        userId,
-        updateUserParams,
-      )
+      const updatedUser = await updateUserService.execute(userId, params)
 
       return ok(updatedUser)
     } catch (error) {
