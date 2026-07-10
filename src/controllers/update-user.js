@@ -7,7 +7,11 @@ import {
 } from './helpers/http.js'
 import { UpdateUserService } from '../services/update-user.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
-import { checkIdIsValid } from './helpers/user.js'
+import {
+  checkIdIsValid,
+  checkPasswordLength,
+  passwordLengthMessage,
+} from './helpers/user.js'
 
 export class UpdateUserController {
   async execute(httpRequest) {
@@ -15,9 +19,9 @@ export class UpdateUserController {
       const params = httpRequest.body
 
       const userId = httpRequest.params.userId
-      const idIsNotValid = checkIdIsValid(userId)
+      const idIsValid = checkIdIsValid(userId)
 
-      if (idIsNotValid) {
+      if (!idIsValid) {
         return notFound({ errorMessage: 'User not found!' })
       }
 
@@ -37,10 +41,9 @@ export class UpdateUserController {
       }
 
       if (params.password) {
-        if (params.password.length < 8) {
-          return badRequest({
-            errorMessage: 'Password need have more than 7 chars',
-          })
+        const passwordIsValid = checkPasswordLength(params.password)
+        if (!passwordIsValid) {
+          return passwordLengthMessage()
         }
       }
 

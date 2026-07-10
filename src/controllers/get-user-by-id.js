@@ -1,20 +1,16 @@
 import { UserNotFoundError } from '../errors/user.js'
 import { GetUserByIdService } from '../services/get-user-by-id.js'
-import {
-  badRequest,
-  internalServerError,
-  notFound,
-  ok,
-} from './helpers/http.js'
-import validator from 'validator'
+import { internalServerError, notFound, ok } from './helpers/http.js'
+
+import { checkIdIsValid, idIsIvalidMessage } from './helpers/user.js'
 
 export class GetUserByIdController {
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.userId
-      const idIsValid = validator.isUUID(userId)
+      const idIsValid = checkIdIsValid(userId)
       if (!idIsValid) {
-        return badRequest({ errorMessage: 'Id is invalid!' })
+        return idIsIvalidMessage()
       }
 
       const service = new GetUserByIdService()

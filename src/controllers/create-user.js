@@ -7,6 +7,7 @@ import {
   successCreate,
 } from './helpers/http.js'
 import validator from 'validator'
+import { checkPasswordLength, passwordLengthMessage } from './helpers/user.js'
 
 export class CreateUserController {
   async execute(httpRequest) {
@@ -25,11 +26,8 @@ export class CreateUserController {
       const emailIsValid = validator.isEmail(params.email)
       if (!emailIsValid) return badRequest({ errorMessage: 'Email Invalid!' })
 
-      const passwordIsValid = params.password.length < 8
-      if (passwordIsValid)
-        return badRequest({
-          errorMessage: 'The password must be at least 8 characters long!',
-        })
+      const passwordIsValid = checkPasswordLength(params.password)
+      if (!passwordIsValid) return passwordLengthMessage()
 
       const postgresEmail = new PostgresGetUserByEmailRepository()
       const emailAlreadyExists = await postgresEmail.execute(params.email)
