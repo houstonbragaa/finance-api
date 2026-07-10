@@ -1,15 +1,13 @@
-import validator from 'validator'
-import {
-  badRequest,
-  internalServerError,
-  notFound,
-  ok,
-} from './helpers/http.js'
+import { badRequest, internalServerError, ok } from './helpers/http.js'
 import { UpdateUserService } from '../services/update-user.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
 import {
+  checkEmailIsValid,
   checkIdIsValid,
   checkPasswordLength,
+  emailIsAlreadyExistsMessage,
+  emailIsInvalidMessage,
+  idIsIvalidMessage,
   passwordLengthMessage,
 } from './helpers/user.js'
 
@@ -22,7 +20,7 @@ export class UpdateUserController {
       const idIsValid = checkIdIsValid(userId)
 
       if (!idIsValid) {
-        return notFound({ errorMessage: 'User not found!' })
+        return idIsIvalidMessage()
       }
 
       const allowedFields = ['first_name', 'last_name', 'email', 'password']
@@ -35,9 +33,8 @@ export class UpdateUserController {
       }
 
       if (params.email) {
-        const emailIsNotValid = !validator.isEmail(params.email)
-        if (emailIsNotValid)
-          return badRequest({ errorMessage: 'Email is not valid!' })
+        const emailIsValid = checkEmailIsValid(params.email)
+        if (!emailIsValid) return emailIsInvalidMessage()
       }
 
       if (params.password) {
@@ -53,7 +50,7 @@ export class UpdateUserController {
       return ok(updatedUser)
     } catch (error) {
       if (error instanceof EmailAlreadyInUseError) {
-        return badRequest({ errorMessage: error.message })
+        return emailIsAlreadyExistsMessage()
       }
       console.log(error)
       return internalServerError()

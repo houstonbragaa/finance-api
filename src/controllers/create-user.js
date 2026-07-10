@@ -6,8 +6,13 @@ import {
   internalServerError,
   successCreate,
 } from './helpers/http.js'
-import validator from 'validator'
-import { checkPasswordLength, passwordLengthMessage } from './helpers/user.js'
+import {
+  checkEmailIsValid,
+  checkPasswordLength,
+  emailIsAlreadyExistsMessage,
+  emailIsInvalidMessage,
+  passwordLengthMessage,
+} from './helpers/user.js'
 
 export class CreateUserController {
   async execute(httpRequest) {
@@ -23,18 +28,15 @@ export class CreateUserController {
         }
       }
 
-      const emailIsValid = validator.isEmail(params.email)
-      if (!emailIsValid) return badRequest({ errorMessage: 'Email Invalid!' })
+      const emailIsValid = checkEmailIsValid(params.email)
+      if (!emailIsValid) return emailIsInvalidMessage()
 
       const passwordIsValid = checkPasswordLength(params.password)
       if (!passwordIsValid) return passwordLengthMessage()
 
       const postgresEmail = new PostgresGetUserByEmailRepository()
       const emailAlreadyExists = await postgresEmail.execute(params.email)
-      if (emailAlreadyExists)
-        return badRequest({
-          errorMessage: `The e-mail ${params.email} already in use error!`,
-        })
+      if (emailAlreadyExists) return emailIsAlreadyExistsMessage(params.email)
 
       //chamar o service (use-case)
 
@@ -43,7 +45,7 @@ export class CreateUserController {
       return successCreate(createdUser)
     } catch (error) {
       if (error instanceof EmailAlreadyInUseError) {
-        return badRequest({ errorMessage: error.message })
+        return emailIsAlreadyExistsMessage()
       }
       console.log(error)
       return internalServerError()
