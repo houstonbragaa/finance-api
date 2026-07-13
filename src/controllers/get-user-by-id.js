@@ -1,8 +1,12 @@
 import { UserNotFoundError } from '../errors/user.js'
 import { GetUserByIdService } from '../services/get-user-by-id.js'
-import { internalServerError, notFound, ok } from './helpers/http.js'
-
-import { checkIdIsValid, idIsIvalidMessage } from './helpers/user.js'
+import {
+  internalServerError,
+  notFound,
+  ok,
+  checkIdIsValid,
+  idIsIvalidMessage,
+} from './helpers/index.js'
 
 export class GetUserByIdController {
   async execute(httpRequest) {
