@@ -5,7 +5,7 @@ export const passwordLengthMessage = () =>
   badRequest({ errorMessage: 'The password need have more then 7 chars!' })
 
 export const idIsIvalidMessage = () =>
-  notFound({ errorMessage: 'Usuário não encontrado!' })
+  notFound({ errorMessage: 'User not found!' })
 
 export const emailIsInvalidMessage = () =>
   badRequest({ errorMessage: 'The email is not valid!' })
