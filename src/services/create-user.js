@@ -1,10 +1,13 @@
 import { v4 } from 'uuid'
 import bcrypt from 'bcrypt'
-import { PostgresCreateUserRepository } from '../repositories/postgres/create-user.js'
 import { PostgresGetUserByEmailRepository } from '../repositories/postgres/get-user-by-email.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
 
 export class CreateUserService {
+  constructor(PostgresCreateUserRepository) {
+    this.PostgresCreateUserRepository = PostgresCreateUserRepository
+  }
+
   async execute(params) {
     //validar email no banco de dados
     const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
@@ -31,8 +34,7 @@ export class CreateUserService {
       password: passwordCrypted,
     }
 
-    const repository = new PostgresCreateUserRepository()
-    const result = await repository.execute(user)
+    const result = await this.PostgresCreateUserRepository.execute(user)
     return result
   }
 }

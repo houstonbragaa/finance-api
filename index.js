@@ -1,17 +1,24 @@
 import 'dotenv/config'
 import express from 'express'
+
+import { PostgresCreateUserRepository } from './src/repositories/postgres/create-user.js'
+
 import { CreateUserController } from './src/controllers/create-user.js'
 import { GetUserByIdController } from './src/controllers/get-user-by-id.js'
 import { GetUsersAllController } from './src/controllers/get-users-all.js'
 import { UpdateUserController } from './src/controllers/update-user.js'
 import { DeleteUserController } from './src/controllers/delete-user.js'
+import { CreateUserService } from './src/services/create-user.js'
 
 const app = express() //crio um servidor com express
 
 app.use(express.json())
 
 app.post('/api/users', async (req, res) => {
-  const controller = new CreateUserController()
+  const repository = new PostgresCreateUserRepository()
+  const service = new CreateUserService(repository)
+  const controller = new CreateUserController(service)
+
   const { statusCode, body } = await controller.execute(req)
   res.status(statusCode).send(body)
 })

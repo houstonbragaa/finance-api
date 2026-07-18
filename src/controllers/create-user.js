@@ -1,6 +1,6 @@
 import { EmailAlreadyInUseError } from '../errors/user.js'
 import { PostgresGetUserByEmailRepository } from '../repositories/postgres/get-user-by-email.js'
-import { CreateUserService } from '../services/create-user.js'
+
 import {
   badRequest,
   internalServerError,
@@ -13,6 +13,10 @@ import {
 } from './helpers/index.js'
 
 export class CreateUserController {
+  constructor(CreateUserService) {
+    this.CreateUserService = CreateUserService
+  }
+
   async execute(httpRequest) {
     try {
       const params = httpRequest.body
@@ -37,9 +41,7 @@ export class CreateUserController {
       if (emailAlreadyExists) return emailIsAlreadyExistsMessage(params.email)
 
       //chamar o service (use-case)
-
-      const service = new CreateUserService()
-      const createdUser = await service.execute(params)
+      const createdUser = await this.CreateUserService.execute(params)
       return successCreate(createdUser)
     } catch (error) {
       if (error instanceof EmailAlreadyInUseError) {
