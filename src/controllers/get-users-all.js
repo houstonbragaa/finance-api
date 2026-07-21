@@ -1,12 +1,15 @@
 import { NoOneUsersFoundError } from '../errors/user.js'
-import { GetUsersAllService } from '../services/get-users-all.js'
+
 import { internalServerError, notFound, ok } from './helpers/http.js'
 
 export class GetUsersAllController {
+  constructor(GetUsersAllService) {
+    this.GetUsersAllService = GetUsersAllService
+  }
+
   async execute() {
     try {
-      const getUsersAllService = new GetUsersAllService()
-      const users = await getUsersAllService.execute()
+      const users = await this.GetUsersAllService.execute()
 
       return ok(users)
     } catch (error) {

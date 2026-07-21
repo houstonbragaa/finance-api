@@ -1,10 +1,12 @@
 import { NoOneUsersFoundError } from '../errors/user.js'
-import { PostgresGetUserAllRepository } from '../repositories/postgres/get-user-all.js'
 
 export class GetUsersAllService {
+  constructor(PostgresGetUserAllRepository) {
+    this.PostgresGetUserAllRepository = PostgresGetUserAllRepository
+  }
+
   async execute() {
-    const getUsersAllRepository = new PostgresGetUserAllRepository()
-    const users = await getUsersAllRepository.execute()
+    const users = await this.PostgresGetUserAllRepository.execute()
 
     if (!users) {
       throw new NoOneUsersFoundError()
