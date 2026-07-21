@@ -1,10 +1,12 @@
 import { UserNotFoundError } from '../errors/user.js'
-import { PostgresGetUserByIdRepository } from '../repositories/postgres/get-user-by-id.js'
 
 export class GetUserByIdService {
+  constructor(PostgresGetUserByIdRepository) {
+    this.PostgresGetUserByIdRepository = PostgresGetUserByIdRepository
+  }
+
   async execute(userId) {
-    const repository = new PostgresGetUserByIdRepository()
-    const user = await repository.execute(userId)
+    const user = await this.PostgresGetUserByIdRepository.execute(userId)
 
     if (!user) {
       throw new UserNotFoundError()

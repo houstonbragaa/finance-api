@@ -1,5 +1,4 @@
 import { UserNotFoundError } from '../errors/user.js'
-import { GetUserByIdService } from '../services/get-user-by-id.js'
 import {
   internalServerError,
   notFound,
@@ -9,6 +8,10 @@ import {
 } from './helpers/index.js'
 
 export class GetUserByIdController {
+  constructor(GetUserByIdService) {
+    this.GetUserByIdService = GetUserByIdService
+  }
+
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.userId
@@ -17,8 +20,9 @@ export class GetUserByIdController {
         return idIsIvalidMessage()
       }
 
-      const service = new GetUserByIdService()
-      const user = await service.execute(httpRequest.params.userId)
+      const user = await this.GetUserByIdService.execute(
+        httpRequest.params.userId,
+      )
 
       return ok(user)
     } catch (error) {
