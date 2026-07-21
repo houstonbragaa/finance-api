@@ -2,9 +2,12 @@ import bcrypt from 'bcrypt'
 
 import { EmailAlreadyInUseError } from '../errors/user.js'
 import { PostgresGetUserByEmailRepository } from '../repositories/postgres/get-user-by-email.js'
-import { PostgresUpdateUserRepository } from '../repositories/postgres/update-user.js'
 
 export class UpdateUserService {
+  constructor(PostgresUpdateUserRepository) {
+    this.PostgresUpdateUserRepository = PostgresUpdateUserRepository
+  }
+
   async execute(userId, params) {
     // verificar se o email ja existe
     if (params.email) {
@@ -29,8 +32,7 @@ export class UpdateUserService {
 
     //chamar o repository
 
-    const updateUserRepository = new PostgresUpdateUserRepository()
-    const result = await updateUserRepository.execute(userId, user)
+    const result = await this.PostgresUpdateUserRepository.execute(userId, user)
 
     return result
   }

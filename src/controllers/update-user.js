@@ -1,4 +1,3 @@
-import { UpdateUserService } from '../services/update-user.js'
 import { EmailAlreadyInUseError } from '../errors/user.js'
 import {
   checkEmailIsValid,
@@ -14,6 +13,10 @@ import {
 } from './helpers/index.js'
 
 export class UpdateUserController {
+  constructor(UpdateUserService) {
+    this.UpdateUserService = UpdateUserService
+  }
+
   async execute(httpRequest) {
     try {
       const params = httpRequest.body
@@ -46,8 +49,7 @@ export class UpdateUserController {
         }
       }
 
-      const updateUserService = new UpdateUserService()
-      const updatedUser = await updateUserService.execute(userId, params)
+      const updatedUser = await this.UpdateUserService.execute(userId, params)
 
       return ok(updatedUser)
     } catch (error) {
