@@ -4,10 +4,12 @@ import express from 'express'
 import { PostgresCreateUserRepository } from './src/repositories/postgres/create-user.js'
 import { PostgresGetUserByIdRepository } from './src/repositories/postgres/get-user-by-id.js'
 import { PostgresUpdateUserRepository } from './src/repositories/postgres/update-user.js'
+import { PostgresDeleteUserRepository } from './src/repositories/postgres/delete-user.js'
 
 import { CreateUserService } from './src/services/create-user.js'
 import { GetUserByIdService } from './src/services/get-user-by-id.js'
 import { UpdateUserService } from './src/services/update-user.js'
+import { DeleteUserService } from './src/services/delete-user.js'
 
 import { CreateUserController } from './src/controllers/create-user.js'
 import { GetUserByIdController } from './src/controllers/get-user-by-id.js'
@@ -53,7 +55,10 @@ app.get('/api/users', async (req, res) => {
 })
 
 app.delete('/api/users/:userId', async (req, res) => {
-  const controller = new DeleteUserController()
+  const repository = new PostgresDeleteUserRepository()
+  const service = new DeleteUserService(repository)
+  const controller = new DeleteUserController(service)
+
   const { statusCode, body } = await controller.execute(req)
   res.status(statusCode).send(body)
 })
