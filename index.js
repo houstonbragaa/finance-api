@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 
+import { PostgresGetUserByEmailRepository } from './src/repositories/postgres/get-user-by-email.js'
 import { PostgresCreateUserRepository } from './src/repositories/postgres/create-user.js'
 import { PostgresGetUserByIdRepository } from './src/repositories/postgres/get-user-by-id.js'
 import { PostgresUpdateUserRepository } from './src/repositories/postgres/update-user.js'
@@ -24,8 +25,9 @@ const app = express() //crio um servidor com express
 app.use(express.json())
 
 app.post('/api/users', async (req, res) => {
+  const emailRepository = new PostgresGetUserByEmailRepository()
   const repository = new PostgresCreateUserRepository()
-  const service = new CreateUserService(repository)
+  const service = new CreateUserService(repository, emailRepository)
   const controller = new CreateUserController(service)
 
   const { statusCode, body } = await controller.execute(req)
@@ -42,8 +44,9 @@ app.get('/api/users/:userId', async (req, res) => {
 })
 
 app.patch('/api/users/:userId', async (req, res) => {
+  const emailRepository = new PostgresGetUserByEmailRepository()
   const repository = new PostgresUpdateUserRepository()
-  const service = new UpdateUserService(repository)
+  const service = new UpdateUserService(repository, emailRepository)
   const controller = new UpdateUserController(service)
 
   const { statusCode, body } = await controller.execute(req)
