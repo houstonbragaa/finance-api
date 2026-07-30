@@ -1,6 +1,6 @@
 import { v4 } from 'uuid'
 import bcrypt from 'bcrypt'
-import { EmailAlreadyInUseError } from '../errors/user.js'
+import { EmailAlreadyInUseError } from '../../errors/user.js'
 
 export class CreateUserService {
   constructor(PostgresCreateUserRepository, PostgresGetUserByEmailRepository) {

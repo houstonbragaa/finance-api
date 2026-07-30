@@ -1,4 +1,4 @@
-import { NoOneUsersFoundError } from '../errors/user.js'
+import { NoOneUsersFoundError } from '../../errors/user.js'
 
 export class GetUsersAllService {
   constructor(PostgresGetUserAllRepository) {
