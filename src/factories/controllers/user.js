@@ -15,11 +15,13 @@ import {
   UpdateUserService,
 } from '../../services/index.js'
 
-import { CreateUserController } from '../../../src/controllers/create-user.js'
-import { GetUserByIdController } from '../../../src/controllers/get-user-by-id.js'
-import { GetUsersAllController } from '../../../src/controllers/get-users-all.js'
-import { UpdateUserController } from '../../../src/controllers/update-user.js'
-import { DeleteUserController } from '../../../src/controllers/delete-user.js'
+import {
+  CreateUserController,
+  GetUserByIdController,
+  GetUsersAllController,
+  UpdateUserController,
+  DeleteUserController,
+} from '../../controllers/index.js'
 
 export const makeCreateUserController = () => {
   const emailRepository = new PostgresGetUserByEmailRepository()
