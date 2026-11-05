@@ -3,7 +3,7 @@ import {
   idIsIvalidMessage,
   internalServerError,
   ok,
-} from './helpers/index.js'
+} from '../helpers/index.js'
 
 export class DeleteUserController {
   constructor(DeleteUserService) {

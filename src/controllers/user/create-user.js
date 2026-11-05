@@ -1,5 +1,5 @@
-import { EmailAlreadyInUseError } from '../errors/user.js'
-import { PostgresGetUserByEmailRepository } from '../repositories/postgres/user/get-user-by-email.js'
+import { EmailAlreadyInUseError } from '../../errors/user.js'
+import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/user/get-user-by-email.js'
 
 import {
   badRequest,
@@ -10,7 +10,7 @@ import {
   emailIsAlreadyExistsMessage,
   emailIsInvalidMessage,
   passwordLengthMessage,
-} from './helpers/index.js'
+} from '../helpers/index.js'
 
 export class CreateUserController {
   constructor(CreateUserService) {

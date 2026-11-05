@@ -1,11 +1,11 @@
-import { UserNotFoundError } from '../errors/user.js'
+import { UserNotFoundError } from '../../errors/user.js'
 import {
   internalServerError,
   notFound,
   ok,
   checkIdIsValid,
   idIsIvalidMessage,
-} from './helpers/index.js'
+} from '../helpers/index.js'
 
 export class GetUserByIdController {
   constructor(GetUserByIdService) {

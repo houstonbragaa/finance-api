@@ -1,6 +1,6 @@
-import { NoOneUsersFoundError } from '../errors/user.js'
+import { NoOneUsersFoundError } from '../../errors/user.js'
 
-import { internalServerError, notFound, ok } from './helpers/http.js'
+import { internalServerError, notFound, ok } from '../helpers/http.js'
 
 export class GetUsersAllController {
   constructor(GetUsersAllService) {
