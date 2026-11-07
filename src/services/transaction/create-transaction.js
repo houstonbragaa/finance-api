@@ -10,7 +10,7 @@ export class CreateTransactionService {
   async execute(params) {
     //validar se o user existe
 
-    const userId = params.userId
+    const userId = params.user_id
     const user = await this.getUserByIdRepository.execute(userId)
 
     if (!user) {
