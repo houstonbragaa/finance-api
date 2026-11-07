@@ -43,7 +43,7 @@ export class CreateTransactionController {
 
       const typeIsValid = ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type)
       if (!typeIsValid) {
-        badRequest({
+        return badRequest({
           message: `The type is invalid`,
         })
       }
@@ -52,6 +52,8 @@ export class CreateTransactionController {
         ...params,
         type,
       })
+      console.log('transação criada')
+      console.log(transaction)
       return successCreate(transaction)
     } catch (error) {
       console.error(error)
