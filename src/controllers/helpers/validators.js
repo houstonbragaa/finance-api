@@ -1,10 +1,7 @@
 import validator from 'validator'
-import { notFound } from './http.js'
+import { badRequest, notFound } from './http.js'
 
 export const checkIdIsValid = (userId) => validator.isUUID(userId)
-
-export const idIsIvalidMessage = () =>
-  notFound({ errorMessage: 'User not found!' })
 
 const checkIfIsString = (value) => typeof value === 'string'
 
@@ -28,3 +25,13 @@ export const validadeRequiredFields = (params, requiredFields) => {
     missingField: undefined,
   }
 }
+
+//errors
+
+export const idIsIvalidMessage = () =>
+  notFound({ errorMessage: 'User not found!' })
+
+export const requiredMissingFieldsMessage = (missingField) =>
+  badRequest({
+    message: `Missing fields: ${missingField}`,
+  })

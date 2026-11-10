@@ -1,6 +1,12 @@
 import validator from 'validator'
 import { badRequest } from './http.js'
 
+export const checkPasswordLength = (password) => password.length > 7
+
+export const checkEmailIsValid = (email) => validator.isEmail(email)
+
+//errors
+
 export const passwordLengthMessage = () =>
   badRequest({ errorMessage: 'The password need have more then 7 chars!' })
 
@@ -11,7 +17,3 @@ export const emailIsAlreadyExistsMessage = (email) =>
   badRequest({
     errorMessage: `The e-mail ${email} already in use error!`,
   })
-
-export const checkPasswordLength = (password) => password.length > 7
-
-export const checkEmailIsValid = (email) => validator.isEmail(email)
