@@ -10,6 +10,7 @@ import {
   emailIsAlreadyExistsMessage,
   emailIsInvalidMessage,
   passwordLengthMessage,
+  validadeRequiredFields,
 } from '../helpers/index.js'
 
 export class CreateUserController {
@@ -23,11 +24,11 @@ export class CreateUserController {
 
       const fieldsList = ['first_name', 'last_name', 'email', 'password']
 
-      for (const field of fieldsList) {
-        const fieldIsValid = !params[field] || params[field].trim().length === 0
-        if (fieldIsValid) {
-          return badRequest({ errorMessage: `Missing field ${field}` })
-        }
+      const { ok, missingField } = validadeRequiredFields(params, fieldsList)
+      if (!ok) {
+        return badRequest({
+          message: `Missing fields: ${missingField}`,
+        })
       }
 
       const emailIsValid = checkEmailIsValid(params.email)

@@ -4,7 +4,11 @@ import {
   successCreate,
 } from '../helpers/http.js'
 import { checkAmountIsValid } from '../helpers/transaction.js'
-import { checkIdIsValid, idIsIvalidMessage } from '../helpers/validators.js'
+import {
+  checkIdIsValid,
+  idIsIvalidMessage,
+  validadeRequiredFields,
+} from '../helpers/validators.js'
 
 export class CreateTransactionController {
   constructor(createTransactionService) {
@@ -17,10 +21,14 @@ export class CreateTransactionController {
 
       const requiredFields = ['user_id', 'name', 'amount', 'date', 'type']
 
-      for (const field of requiredFields) {
-        if (!params[field] || params[field].toString().trim().length === 0) {
-          return badRequest({ message: `Missing fields: ${field}` })
-        }
+      const { ok, missingField } = validadeRequiredFields(
+        params,
+        requiredFields,
+      )
+      if (!ok) {
+        return badRequest({
+          message: `Missing fields: ${missingField}`,
+        })
       }
 
       const idIsValid = checkIdIsValid(params.user_id)
