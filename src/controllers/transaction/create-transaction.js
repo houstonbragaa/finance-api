@@ -4,7 +4,7 @@ import {
   successCreate,
 } from '../helpers/http.js'
 import { checkAmountIsValid } from '../helpers/transaction.js'
-import { checkIdIsValid, idIsIvalidMessage } from '../helpers/user.js'
+import { checkIdIsValid, idIsIvalidMessage } from '../helpers/validators.js'
 
 export class CreateTransactionController {
   constructor(createTransactionService) {
