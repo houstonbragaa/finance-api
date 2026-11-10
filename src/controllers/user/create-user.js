@@ -2,7 +2,6 @@ import { EmailAlreadyInUseError } from '../../errors/user.js'
 import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/user/get-user-by-email.js'
 
 import {
-  badRequest,
   internalServerError,
   successCreate,
   checkEmailIsValid,
@@ -11,6 +10,7 @@ import {
   emailIsInvalidMessage,
   passwordLengthMessage,
   validadeRequiredFields,
+  requiredMissingFieldsMessage,
 } from '../helpers/index.js'
 
 export class CreateUserController {
@@ -25,11 +25,7 @@ export class CreateUserController {
       const fieldsList = ['first_name', 'last_name', 'email', 'password']
 
       const { ok, missingField } = validadeRequiredFields(params, fieldsList)
-      if (!ok) {
-        return badRequest({
-          message: `Missing fields: ${missingField}`,
-        })
-      }
+      if (!ok) return requiredMissingFieldsMessage(missingField)
 
       const emailIsValid = checkEmailIsValid(params.email)
       if (!emailIsValid) return emailIsInvalidMessage()

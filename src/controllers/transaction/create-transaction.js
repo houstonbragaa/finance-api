@@ -1,12 +1,14 @@
+import { internalServerError, successCreate } from '../helpers/http.js'
 import {
-  badRequest,
-  internalServerError,
-  successCreate,
-} from '../helpers/http.js'
-import { checkAmountIsValid } from '../helpers/transaction.js'
+  checkAmountIsValid,
+  checkRequiredTypeMessage,
+  checkTypeIsValid,
+  checkValidCurrencyMessage,
+} from '../helpers/transaction.js'
 import {
   checkIdIsValid,
   idIsIvalidMessage,
+  requiredMissingFieldsMessage,
   validadeRequiredFields,
 } from '../helpers/validators.js'
 
@@ -25,36 +27,18 @@ export class CreateTransactionController {
         params,
         requiredFields,
       )
-      if (!ok) {
-        return badRequest({
-          message: `Missing fields: ${missingField}`,
-        })
-      }
+      if (!ok) return requiredMissingFieldsMessage(missingField)
 
       const idIsValid = checkIdIsValid(params.user_id)
       if (!idIsValid) return idIsIvalidMessage()
 
-      if (params.amount <= 0) {
-        return badRequest({
-          message: `The amount must be greater than 0`,
-        })
-      }
-
       const amountIsValid = checkAmountIsValid(params.amount.toString())
-      if (!amountIsValid) {
-        return badRequest({
-          message: `The amount must be a valid currency`,
-        })
-      }
+      if (!amountIsValid) return checkValidCurrencyMessage()
 
       const type = params.type.trim().toUpperCase()
 
-      const typeIsValid = ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type)
-      if (!typeIsValid) {
-        return badRequest({
-          message: `The type is invalid`,
-        })
-      }
+      const typeIsValid = checkTypeIsValid(type)
+      if (!typeIsValid) return checkRequiredTypeMessage()
 
       const transaction = await this.createTransactionService.execute({
         ...params,
