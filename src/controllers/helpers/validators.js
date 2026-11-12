@@ -29,7 +29,7 @@ export const validadeRequiredFields = (params, requiredFields) => {
 //errors
 
 export const idIsIvalidMessage = () =>
-  notFound({ errorMessage: 'User not found!' })
+  notFound({ errorMessage: 'Id is invalid' })
 
 export const requiredMissingFieldsMessage = (missingField) =>
   badRequest({
