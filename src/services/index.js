@@ -5,3 +5,4 @@ export * from './user/get-users-all.js'
 export * from './user/update-user.js'
 
 export * from './transaction/create-transactions.js'
+export * from './transaction/get-transactions-by-userId.js'
