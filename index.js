@@ -7,7 +7,10 @@ import {
   makeGetUsersController,
   makeUpdateController,
 } from './src/factories/controllers/user.js'
-import { makeCreateTransactionController } from './src/factories/controllers/transaction.js'
+import {
+  makeCreateTransactionController,
+  makeGetTransactionsByUserId,
+} from './src/factories/controllers/transaction.js'
 
 const app = express() //crio um servidor com express
 
@@ -51,13 +54,22 @@ app.delete('/api/users/:userId', async (req, res) => {
 //transactions
 
 app.post('/api/transactions', async (req, res) => {
-  const createTransactionController = makeCreateTransactionController()
+  const controller = makeCreateTransactionController()
 
-  const { statusCode, body } = await createTransactionController.execute(req)
+  const { statusCode, body } = await controller.execute(req)
 
   res.status(statusCode).send(body)
 })
 
+app.get('./api/transactions', async (req, res) => {
+  const controller = makeGetTransactionsByUserId()
+
+  const { statusCode, body } = await controller.execute(req)
+
+  res.status(statusCode).send(body)
+})
+
+//aplicação disponível na porta 8080
 app.listen(process.env.EXPRESS_PORT, () => {
   console.log(`Servidor rodando na porta ${process.env.EXPRESS_PORT}`)
-}) //aplicação disponível na porta 8080
+})
