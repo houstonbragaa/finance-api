@@ -13,34 +13,25 @@ import {
 } from '../../services/index.js'
 
 export const makeCreateTransactionController = () => {
-  const createTransactionRepository = new PostgresCreateTransactionRepository()
+  const repository = new PostgresCreateTransactionRepository()
 
-  const getUserByIdRepository = new PostgresGetUserByIdRepository()
+  const idRepository = new PostgresGetUserByIdRepository()
 
-  const createTransactionService = new CreateTransactionService(
-    createTransactionRepository,
-    getUserByIdRepository,
-  )
+  const service = new CreateTransactionService(repository, idRepository)
 
-  const createTransactionController = new CreateTransactionController(
-    createTransactionService,
-  )
-  return createTransactionController
+  const controller = new CreateTransactionController(service)
+
+  return controller
 }
 
 export const makeGetTransactionsByUserId = () => {
-  const getTransactionsByUserIdRepository =
-    new PostgresGetTransactionsByUserIdRepository()
+  const repository = new PostgresGetTransactionsByUserIdRepository()
 
-  const getUserByIdRepository = new PostgresGetUserByIdRepository()
+  const idRepository = new PostgresGetUserByIdRepository()
 
-  const getTransactionsByUserIdService = new GetTransactionsByUserIdService(
-    getTransactionsByUserIdRepository,
-    getUserByIdRepository,
-  )
+  const service = new GetTransactionsByUserIdService(repository, idRepository)
 
-  const getTransactionsByUserIdController =
-    new GetTransactionsByUserIdController(getTransactionsByUserIdService)
+  const controller = new GetTransactionsByUserIdController(service)
 
-  return getTransactionsByUserIdController
+  return controller
 }
