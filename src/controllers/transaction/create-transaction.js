@@ -32,7 +32,7 @@ export class CreateTransactionController {
       const idIsValid = checkIdIsValid(params.user_id)
       if (!idIsValid) return idIsIvalidMessage()
 
-      const amountIsValid = checkAmountIsValid(params.amount.toString())
+      const amountIsValid = checkAmountIsValid(params.amount)
       if (!amountIsValid) return checkValidCurrencyMessage()
 
       const type = params.type.trim().toUpperCase()
