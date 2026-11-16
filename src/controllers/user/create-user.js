@@ -1,5 +1,5 @@
 import { EmailAlreadyInUseError } from '../../errors/user.js'
-import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/user/get-user-by-email.js'
+import { GetUserByEmailRepository } from '../../repositories/postgres/user/get-user-by-email.js'
 
 import {
   internalServerError,
@@ -33,7 +33,7 @@ export class CreateUserController {
       const passwordIsValid = checkPasswordLength(params.password)
       if (!passwordIsValid) return passwordLengthMessage()
 
-      const postgresEmail = new PostgresGetUserByEmailRepository()
+      const postgresEmail = new GetUserByEmailRepository()
       const emailAlreadyExists = await postgresEmail.execute(params.email)
       if (emailAlreadyExists) return emailIsAlreadyExistsMessage(params.email)
 

@@ -3,9 +3,9 @@ import {
   GetTransactionsByUserIdController,
 } from '../../controllers/index.js'
 import {
-  PostgresCreateTransactionRepository,
-  PostgresGetTransactionsByUserIdRepository,
-  PostgresGetUserByIdRepository,
+  CreateTransactionRepository,
+  GetTransactionsByUserIdRepository,
+  GetUserByIdRepository,
 } from '../../repositories/postgres/index.js'
 import {
   CreateTransactionService,
@@ -13,9 +13,9 @@ import {
 } from '../../services/index.js'
 
 export const makeCreateTransactionController = () => {
-  const repository = new PostgresCreateTransactionRepository()
+  const repository = new CreateTransactionRepository()
 
-  const idRepository = new PostgresGetUserByIdRepository()
+  const idRepository = new GetUserByIdRepository()
 
   const service = new CreateTransactionService(repository, idRepository)
 
@@ -25,9 +25,9 @@ export const makeCreateTransactionController = () => {
 }
 
 export const makeGetTransactionsByUserId = () => {
-  const repository = new PostgresGetTransactionsByUserIdRepository()
+  const repository = new GetTransactionsByUserIdRepository()
 
-  const idRepository = new PostgresGetUserByIdRepository()
+  const idRepository = new GetUserByIdRepository()
 
   const service = new GetTransactionsByUserIdService(repository, idRepository)
 

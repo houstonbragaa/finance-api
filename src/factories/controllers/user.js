@@ -1,10 +1,10 @@
 import {
-  PostgresCreateUserRepository,
-  PostgresDeleteUserRepository,
-  PostgresGetUserAllRepository,
-  PostgresGetUserByEmailRepository,
-  PostgresGetUserByIdRepository,
-  PostgresUpdateUserRepository,
+  CreateUserRepository,
+  DeleteUserRepository,
+  GetUserAllRepository,
+  GetUserByEmailRepository,
+  GetUserByIdRepository,
+  UpdateUserRepository,
 } from '../../repositories/postgres/index.js'
 
 import {
@@ -24,37 +24,37 @@ import {
 } from '../../controllers/index.js'
 
 export const makeCreateUserController = () => {
-  const emailRepository = new PostgresGetUserByEmailRepository()
-  const repository = new PostgresCreateUserRepository()
+  const emailRepository = new GetUserByEmailRepository()
+  const repository = new CreateUserRepository()
   const service = new CreateUserService(repository, emailRepository)
   const controller = new CreateUserController(service)
   return controller
 }
 
 export const makeGetUserByIdController = () => {
-  const repository = new PostgresGetUserByIdRepository()
+  const repository = new GetUserByIdRepository()
   const service = new GetUserByIdService(repository)
   const controller = new GetUserByIdController(service)
   return controller
 }
 
 export const makeUpdateController = () => {
-  const emailRepository = new PostgresGetUserByEmailRepository()
-  const repository = new PostgresUpdateUserRepository()
+  const emailRepository = new GetUserByEmailRepository()
+  const repository = new UpdateUserRepository()
   const service = new UpdateUserService(repository, emailRepository)
   const controller = new UpdateUserController(service)
   return controller
 }
 
 export const makeGetUsersController = () => {
-  const repository = new PostgresGetUserAllRepository()
+  const repository = new GetUserAllRepository()
   const service = new GetUsersAllService(repository)
   const controller = new GetUsersAllController(service)
   return controller
 }
 
 export const makeDeleteUserController = () => {
-  const repository = new PostgresDeleteUserRepository()
+  const repository = new DeleteUserRepository()
   const service = new DeleteUserService(repository)
   const controller = new DeleteUserController(service)
   return controller
