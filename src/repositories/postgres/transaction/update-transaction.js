@@ -10,7 +10,7 @@ export class UpdateTransactionRepository {
       updateValues.push(params[key])
     })
 
-    updateFields.push(transactionId)
+    updateValues.push(transactionId)
 
     const updateQuery = `
       UPDATE transactions
@@ -20,6 +20,6 @@ export class UpdateTransactionRepository {
     `
 
     const result = await helperPostgres.query(updateQuery, updateValues)
-    return result
+    return result[0]
   }
 }
