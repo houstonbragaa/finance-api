@@ -4,7 +4,7 @@ export class UpdateTransactionService {
   }
 
   async execute(transactionId, params) {
-    const transaction = await this.updateTransactionRepository(
+    const transaction = await this.updateTransactionRepository.execute(
       transactionId,
       params,
     )
