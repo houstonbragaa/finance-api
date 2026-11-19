@@ -52,7 +52,7 @@ export class UpdateTransactionController {
         }
       }
 
-      const transaction = await this.updateTransactionService(
+      const transaction = await this.updateTransactionService.execute(
         httpRequest.params.transactionId,
         params,
       )
@@ -60,7 +60,7 @@ export class UpdateTransactionController {
       return ok(transaction)
     } catch (error) {
       console.error(error)
-      return internalServerError
+      return internalServerError()
     }
   }
 }
