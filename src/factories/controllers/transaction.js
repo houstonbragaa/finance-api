@@ -2,18 +2,21 @@ import {
   CreateTransactionController,
   GetTransactionsByUserIdController,
   UpdateTransactionController,
+  DeleteTransactionController,
 } from '../../controllers/index.js'
 import {
   CreateTransactionRepository,
   GetTransactionsByUserIdRepository,
   GetUserByIdRepository,
+  UpdateTransactionRepository,
+  DeleteTransactionRepository,
 } from '../../repositories/postgres/index.js'
-import { UpdateTransactionRepository } from '../../repositories/postgres/transaction/update-transaction.js'
 import {
   CreateTransactionService,
   GetTransactionsByUserIdService,
+  DeleteTransactionService,
+  UpdateTransactionService,
 } from '../../services/index.js'
-import { UpdateTransactionService } from '../../services/transaction/update-transaction.js'
 
 export const makeCreateTransactionController = () => {
   const repository = new CreateTransactionRepository()
@@ -45,5 +48,14 @@ export const makeUpdateTransactionController = () => {
   const service = new UpdateTransactionService(repository)
 
   const controller = new UpdateTransactionController(service)
+  return controller
+}
+
+export const makeDeleteTransactionController = () => {
+  const repository = new DeleteTransactionRepository()
+
+  const service = new DeleteTransactionService(repository)
+
+  const controller = new DeleteTransactionController(service)
   return controller
 }
