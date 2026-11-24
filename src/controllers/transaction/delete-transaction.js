@@ -1,4 +1,4 @@
-import { internalServerError } from '../helpers/http.js'
+import { internalServerError, ok } from '../helpers/http.js'
 import { transactionNotFound } from '../helpers/transaction.js'
 
 export class DeleteTransactionController {
@@ -16,8 +16,8 @@ export class DeleteTransactionController {
       if (!deletedTransaction) {
         return transactionNotFound()
       }
-
-      return deletedTransaction
+      console.log(deletedTransaction)
+      return ok(deletedTransaction)
     } catch (error) {
       console.log(error)
       return internalServerError()
