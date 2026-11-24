@@ -27,8 +27,7 @@ export const checkRequiredTypeMessage = () =>
     message: `The type is invalid`,
   })
 
-export const transactionNotFound = () => {
+export const transactionNotFound = () =>
   notFound({
-    message: 'The transaction not found!',
+    message: 'The transaction not exist!',
   })
-}
